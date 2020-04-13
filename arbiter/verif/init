@@ -1,0 +1,13 @@
+//--------------------------------------------
+// Reset sequence for design "wqueue"
+//--------------------------------------------
+
+// Uncomment line below to drive 'b0 on inputs not explicitly assigned
+// $default_input_value 0
+
+// Declare reference clock for "##" directive
+$default_clock clk
+
+// Assert reset for 1 clock edge
+rst = 1
+## 1
