@@ -1,24 +1,58 @@
-module tb_arbiter ();
+module top ();
 
-   logic  clk, rst;    
-   logic  req0, req1, req2;
-   logic  gnt0, gnt1, gnt2;
-
-   // Connect the DUT
-   arbiter U (.*);   
+   reg             clk;    
+   reg             rst;    
+   reg             req2;   
+   reg             req1;   
+   reg             req0;   
+   
+   wire            gnt2;   
+   wire            gnt1;   
+   wire            gnt0;  
    
    // Clock generator
    always #1 clk = ~clk;
-
-   // Test stimuli driver
-   driver drv0(clk, req0, gnt0);
-   driver drv1(clk, req1, gnt1);
-   driver drv2(clk, req2, gnt2);
    
    initial begin
-      clk = 0;
-      rst = 1;
-      #10 rst = 0;
-      #400 $finish;
+     clk = 1;
+     rst = 1;
+     req0 = 0;
+     req1 = 0;
+     req2 = 0;
+     #10 rst = 0;
+     repeat (1) @ (posedge clk);
+     req0 <= 1;
+     repeat (1) @ (posedge clk);
+     req0 <= 0;
+     repeat (1) @ (posedge clk);
+     req0 <= 1;
+     req1 <= 1;
+     repeat (1) @ (posedge clk);
+     req2 <= 1;
+     req1 <= 0;
+     repeat (1) @ (posedge clk);
+     req2 <= 0;
+     repeat (1) @ (posedge clk);
+     repeat (1) @ (posedge clk);
+     req0 <= 0;
+     repeat (1) @ (posedge clk);  
+     #10 $finish;
    end 
-endmodule
+   
+   // Connect the DUT
+   arbiter U (
+    clk,    
+    rst,    
+   
+    req2,   
+    req1,   
+    req0,   
+    
+    gnt2,   
+    gnt1,   
+    gnt0   
+   );
+   
+   endmodule
+   
+   
